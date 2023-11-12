@@ -3,6 +3,7 @@ import csv
 import matplotlib.pyplot as plt
 import pandas as pd
 import random as rd
+import statistics as stats
 
 def importar_archivos_nparray(archivo):
     dades = []
@@ -15,14 +16,18 @@ def importar_archivos_nparray(archivo):
     dades_np = np.array(dades)
     return dades_np
 
-
-def crear_grafico_tm(dades_np):
-    filas_tm = np.array(dades_np[dades_np[:, 3] == 'TM'])
+def filtrar(filtrado, dades_np):
+    filas_tm = np.array(dades_np[dades_np[:, 3] == filtrado])
     resultado = []
     for i in filas_tm:
         if '2022-02' in i[0]:
             resultado.append(i)
     resultado = np.array(resultado)
+    
+    return resultado
+
+def crear_grafico_tm(dades_np):
+    resultado = filtrar('TM', dades_np)
     dates= []
     D5 = []
     X2 = []
@@ -41,8 +46,6 @@ def crear_grafico_tm(dades_np):
             case'X8' :
                 X8.append(float(i[4]))
 
-  
-  
     #Dades en un sol gráfic
 
     plt.plot(dates, D5, label="D5", color= "r")
@@ -121,14 +124,55 @@ def calcula_temp_2023(temps_2022):
     plt.show()   
 
 def calcul_precipitacions_2023(dades_np):
-    filas_febrer = np.array('2022-02' in dades_np[dades_np[:, 0]])
-    percentatge= 0
-    total_dies = 0
-    for i in filas_febrer:
-        if i[3]== "PPT" and i[4] == 1:
-            percentatge+=1
-        total_dies+=1
+    resultado = filtrar('PPT', dades_np)
+    lista_dias = []
+    contador = 0
+    lista = []
+    for i in resultado:
+        if contador < 3:
+            lista.append(i)
+        else:
+            lista_dias.append(lista)
+            lista = []
+            contador = 0
+            lista.append(i)
 
+        contador = contador +1
+
+    lista_ayuda = []
+    lista_resultado = []
+    contador_dias_llueve = 0
+    for i in lista_dias:
+        for j in i:
+            if j[4] != '0':
+                lista_ayuda.append(1)
+                
+            else:
+                lista_ayuda.append(0)
+        print(lista_ayuda)
+        print(stats.mode(lista_ayuda) )
+        if stats.mode(lista_ayuda) == 1:
+            lista_resultado.append([i[0][0], True])
+            contador_dias_llueve = contador_dias_llueve +1
+        else:
+            lista_resultado.append([i[0][0], False])
+        lista_ayuda = []
+    
+    porcentaje_llueve = contador_dias_llueve / 28 * 100
+    porcentaje_no_llueve = (28- contador_dias_llueve) / 28 * 100
+    porcentajes = [porcentaje_llueve, porcentaje_no_llueve]
+    etiquetas = ["Plou", "No plou"]
+
+    #QUESITOS
+    fig, ax = plt.subplots()
+    ax.pie(porcentajes, labels = etiquetas, autopct="%0.1f %%")
+    plt.show()
+
+    fig, ax = plt.subplots()
+    ax.barh(etiquetas, width = porcentajes)
+    plt.xlim(0,100)
+    plt.show()
+    
 
 
 def main():
