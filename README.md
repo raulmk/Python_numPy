@@ -14,7 +14,7 @@ Los requisitos para poder visualizar el proyecto son los siguientes:
 - Recomendamos tener Visual Studio Code para tener una interfaz más interactiva y no tener que ejecutar el código desde terminal.
 ***
 Instalación y ejecución:
-- Paso 1: Desde la ruta donde quieras tener el proyecto, abre un terminal y ejecuta el siguiente comando -> git clone https://github.com/DavidMorenoF/Python_ETLfromCSV.git
+- Paso 1: Desde la ruta donde quieras tener el proyecto, abre un terminal y ejecuta el siguiente comando -> git clone https://github.com/raulmk/Python_numPy
 - Paso 2: Una vez tienes el proyecto, abre Visual Studio Code. Clica en la pestaña de arriba a la izquierda y seguidamente le das a la opción de abrir directorio o carpeta.
 - Paso 3: Abre la carpeta del proyecto y tendrás todo el proyecto a tu disposición.
 - Paso 4: Dirigete al archivo [main.py](https://github.com/raulmk/Python_numPy/blob/main/main.py) y ejecuta el codigo.
